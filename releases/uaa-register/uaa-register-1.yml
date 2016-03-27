@@ -1,0 +1,30 @@
+---
+packages:
+- name: libyaml_0.1.5
+  version: 7a83c6ef62526f421625fde66e94ca50263f8216
+  fingerprint: 7a83c6ef62526f421625fde66e94ca50263f8216
+  sha1: 958b552d6e6b8b4c64ee1957b76cf6258784db10
+  dependencies: []
+- name: ruby_2.2.4
+  version: 2cc756f4819dc38603266cafed8795d2eab743f9
+  fingerprint: 2cc756f4819dc38603266cafed8795d2eab743f9
+  sha1: 908ca38d5af43475a14256b98ef1c0526ddd1ca6
+  dependencies:
+  - libyaml_0.1.5
+jobs:
+- name: deregister-client
+  version: 04cb8aa2c6f86b03cba192443586ac3e7cc2ebec
+  fingerprint: 04cb8aa2c6f86b03cba192443586ac3e7cc2ebec
+  sha1: 80cbb7c7de80a729368f39307c2250be2cf8a716
+- name: register-client
+  version: 2540f76a407fd87797ae73b08a3067ba531212ff
+  fingerprint: 2540f76a407fd87797ae73b08a3067ba531212ff
+  sha1: b43d2759ffceefe388a4c5110f2f87ad341e662e
+license:
+  version: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  fingerprint: e6c4ccc65c76e75e2338d1edabdcf264d37ee663
+  sha1: 39cff5b4edcab20e913555bab15d90922959b0d9
+commit_hash: d920c257
+uncommitted_changes: true
+name: uaa-register
+version: '1'

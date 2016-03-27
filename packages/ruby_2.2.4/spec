@@ -1,0 +1,11 @@
+---
+name: ruby_2.2.4
+
+dependencies:
+- libyaml_0.1.5
+
+files:
+- ruby_2.2.4/ruby-2.2.4.tar.gz
+- ruby_2.2.4/rubygems-2.6.2.tgz
+- ruby_2.2.4/bundler-1.11.2.gem
+- ruby_2.2.4/cf-uaac-cache-3.1.7.tar.gz

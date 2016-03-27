@@ -1,0 +1,25 @@
+# abort script on any command that exits with a non zero value
+set -e -x
+
+tar xzf ruby_2.2.4/ruby-2.2.4.tar.gz
+pushd ruby-2.2.4
+  ./configure \
+    --prefix=${BOSH_INSTALL_TARGET} \
+    --disable-install-doc \
+    --with-opt-dir=/var/vcap/packages/libyaml_0.1.5
+
+  make
+  make install
+popd
+
+tar zxvf ruby_2.2.4/rubygems-2.6.2.tgz
+pushd rubygems-2.6.2
+  ${BOSH_INSTALL_TARGET}/bin/ruby setup.rb
+popd
+
+${BOSH_INSTALL_TARGET}/bin/gem install ruby_2.2.4/bundler-1.11.2.gem --no-ri --no-rdoc
+
+tar zxvf ruby_2.2.4/cf-uaac-cache-3.1.7.tar.gz
+pushd cf-uaac
+  ${BOSH_INSTALL_TARGET}/bin/bundler install
+popd

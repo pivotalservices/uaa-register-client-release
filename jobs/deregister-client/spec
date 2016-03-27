@@ -1,0 +1,20 @@
+---
+name: deregister-client
+templates:
+  deregister.sh.erb: bin/run
+packages:
+- libyaml_0.1.5
+- ruby_2.2.4
+
+properties:
+  uaa.url:
+    description: uaa url
+  uaa.admin_user:
+    description: uaa admin user name
+  uaa.admin_secret:
+    description: uaa admin user secret
+  uaa.skip_ssl:
+    description: skip ssl validation
+    default: true
+  client.id:
+    description: id for the uaa client

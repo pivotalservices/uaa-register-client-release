@@ -1,0 +1,67 @@
+---
+name: register-uaa-client
+director_uuid: cbd4b944-f941-46bb-80d1-51714f3c07fe
+
+update:
+  canaries: 1
+  canary_watch_time: 30000-240000
+  update_watch_time: 30000-600000
+  max_in_flight: 3
+
+compilation:
+  network: uaa-register
+  reuse_compilation_vms: true
+  workers: 4
+  cloud_properties:
+    ram: 2048
+    disk: 8192
+    cpu: 2
+
+resource_pools:
+- name: small_z1
+  network: uaa-register
+  size: 1
+  stemcell:
+    name: bosh-vcloud-esxi-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    ram: 1024
+    disk: 10000
+    cpu: 1
+
+releases:
+- name: uaa-register
+  version: latest
+
+networks:
+  - name: uaa-register
+    type: manual
+    subnets:
+      - range: 192.168.201.0/24
+        gateway: 192.168.201.1
+        dns: [192.168.201.1]
+        reserved:
+          - 192.168.201.60 - 192.168.201.254
+        static:
+          - 192.168.201.2 - 192.168.201.30
+        cloud_properties: {name: ardo}
+
+jobs:
+- name: uaa-register
+  templates:
+  - name: register-client
+    release: uaa-register
+  instances: 1
+  resource_pool: small_z1
+  lifecycle: errand
+  networks:
+  - name: uaa-register
+  properties:
+    uaa:
+      url: https://uaa.10.65.192.249.xip.io
+      admin_user: admin
+      admin_secret: secret
+    client:
+      id: test-client
+      authorized_grant_types: "client_credentials refresh_token"
+      secret: test

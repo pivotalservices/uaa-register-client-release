@@ -1,0 +1,84 @@
+---
+name: register-uaa-client
+director_uuid: d79b8bdc-238f-43b5-8d0c-f0ac9d02148e
+
+update:
+  canaries: 1
+  canary_watch_time: 30000-240000
+  update_watch_time: 30000-600000
+  max_in_flight: 3
+
+compilation:
+  network: uaa-register
+  reuse_compilation_vms: true
+  workers: 4
+  cloud_properties:
+    name: random
+
+resource_pools:
+- name: small_z1
+  network: uaa-register
+  size: 1
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
+    version: latest
+  cloud_properties:
+    name: random
+
+releases:
+- name: uaa-register
+  version: latest
+
+networks:
+  - name: uaa-register
+    type: manual
+    subnets:
+    - cloud_properties:
+        name: random
+      range: 10.244.2.0/30
+      reserved:
+      - 10.244.2.1
+      static: []
+    - cloud_properties:
+        name: random
+      range: 10.244.2.4/30
+      reserved:
+      - 10.244.2.5
+      static: []
+    - cloud_properties:
+        name: random
+      range: 10.244.2.8/30
+      reserved:
+      - 10.244.2.9
+      static: []
+jobs:
+- name: uaa-client-register
+  templates:
+  - name: register-client
+    release: uaa-register
+  instances: 1
+  resource_pool: small_z1
+  lifecycle: errand
+  networks:
+  - name: uaa-register
+- name: uaa-client-deregister
+  templates:
+  - name: deregister-client
+    release: uaa-register
+  instances: 1
+  resource_pool: small_z1
+  lifecycle: errand
+  networks:
+  - name: uaa-register
+properties:
+  uaa:
+    url: https://uaa.bosh-lite.com
+    admin_user: admin
+    admin_secret: admin-secret
+  client:
+    id: datadog-firehose-nozzle
+    authorized_grant_types: "authorization_code,client_credentials,refresh_token"
+    secret: test
+    access_token_validity: 1209600
+    authorities: oauth.login,doppler.firehose
+    scope: "openid,oauth.approvals,doppler.firehose"

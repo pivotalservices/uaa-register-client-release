@@ -1,0 +1,7 @@
+---
+name: libyaml_0.1.5
+
+dependencies:
+
+files:
+- libyaml_0.1.5/yaml-0.1.5.tar.gz

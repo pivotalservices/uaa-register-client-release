@@ -1,0 +1,48 @@
+---
+name: register-client
+templates:
+  register.sh.erb: bin/run
+packages:
+- libyaml_0.1.5
+- ruby_2.2.4
+
+properties:
+  uaa.url:
+    description: uaa url
+  uaa.admin_user:
+    description: uaa admin user name
+  uaa.admin_secret:
+    description: uaa admin user secret
+  uaa.skip_ssl:
+    description: skip ssl validation
+    default: true
+  client.id:
+    description: id for the uaa client
+  client.name:
+    description: name for the uaa client
+    default: ""
+  client.scope:
+    description: scope for the uaa client
+    default: "uaa.none"
+  client.authorized_grant_types:
+    description: authorized grant types
+  client.authorities:
+    description: authorities
+    default: ""
+  client.redirect_uri:
+    description: "redirect url"
+    default: ""
+  client.autoapprove:
+    description: autoapprove
+    default: ""
+  client.signup_redirect_url:
+    description: signup redirector url
+    default: ""
+  client.secret:
+    description: secret
+  client.access_token_validity:
+    description: "access token validity"
+    default: ""
+  client.refresh_token_validity:
+    description: "refresh token validity"
+    default: ""

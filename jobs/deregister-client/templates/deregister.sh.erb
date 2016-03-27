@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e -x
+
+UAAC=/var/vcap/packages/ruby_2.2.4/bin/uaac
+
+<% if p("uaa.skip_ssl") %>
+  export SKIP_SSL="--skip-ssl-validation"
+<% end %>
+
+export PATH=/var/vcap/packages/ruby_2.2.4/bin:$PATH
+export HOME=/root
+
+$UAAC target <%= p("uaa.url") %> $SKIP_SSL
+$UAAC token client get <%= p("uaa.admin_user") %> -s <%= p("uaa.admin_secret") %>
+
+$UAAC client delete <%= p("client.id") %> \

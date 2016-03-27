@@ -1,0 +1,38 @@
+#!/bin/bash
+
+set -e -x
+
+UAAC=/var/vcap/packages/ruby_2.2.4/bin/uaac
+
+<% if p("uaa.skip_ssl") %>
+  export SKIP_SSL="--skip-ssl-validation"
+<% end %>
+
+export PATH=/var/vcap/packages/ruby_2.2.4/bin:$PATH
+export HOME=/root
+
+$UAAC target <%= p("uaa.url") %> $SKIP_SSL
+$UAAC token client get <%= p("uaa.admin_user") %> -s <%= p("uaa.admin_secret") %>
+
+set +e
+
+$UAAC client get <%= p("client.id") %>
+
+if [ "$?" = "0" ]; then
+    echo "the client already exists, skip client creation"
+    exit 0
+fi
+
+set -e
+
+$UAAC client add <%= p("client.id") %> \
+               --name "<%= p("client.name") %>" \
+               --scope "<%= p("client.scope") %>" \
+               --authorized_grant_types "<%= p("client.authorized_grant_types") %>" \
+               --access_token_validity "<%= p("client.access_token_validity") %>" \
+               --refresh_token_validity "<%= p("client.refresh_token_validity") %>" \
+               --authorities  "<%= p("client.authorities") %>" \
+               --redirect_uri "<%= p("client.redirect_uri") %>" \
+               --autoapprove  "<%= p("client.autoapprove") %>" \
+               --signup_redirect_url "<%= p("client.signup_redirect_url") %>" \
+               --secret "<%= p("client.secret") %>"

@@ -1,0 +1,6 @@
+---
+blobstore:
+  provider: s3
+  options:
+    bucket_name: uaa-register-client-release
+final_name: uaa-register
